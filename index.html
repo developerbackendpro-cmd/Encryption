@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aiogram</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container-fluid">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="text-center" style="background-color: darkcyan; color: white; padding-top: 10px; padding-bottom: 10px; font-weight: bold; font-size: 26px;">📘 Aiogram Telegram-bot Encryption</div>
+            <div class="text-center" style="background-color: purple; color: white; padding-top: 10px; padding-bottom: 10px; font-weight: bold; font-size: 26px;">
+                <p style="color: white; font-weight: bold;">pip install aiogram==2.23.1<br>pip install cryptography</p>
+            </div>
+            <div id="aiogram" style="width: 100%; height: 2500px;"></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js"></script>
+    <script>
+        require.config({paths: {'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs'}});
+        require(['vs/editor/editor.main'], function () {
+            function createEditor(containerId, filePath) {
+                fetch(filePath)
+                    .then(response => response.text())
+                    .then(code => {
+                        const editor = monaco.editor.create(document.getElementById(containerId), {
+                            value: code,
+                            language: 'python',
+                            theme: 'vs-dark',
+                            fontSize: 16,
+                            lineHeight: 24,
+                            automaticLayout: true,
+                            readOnly: true,
+                            contextmenu: false,
+                            minimap: {enabled: false},
+                            scrollbar: {
+                                vertical: 'hidden',
+                                horizontal: 'hidden',
+                                handleMouseWheel: false,
+                                alwaysConsumeMouseWheel: false
+                            }
+                        });
+                        editor.onContextMenu(e => e.event.preventDefault());
+                        editor.onKeyDown(e => {
+                            const key = e.browserEvent.key.toLowerCase();
+                            if (e.browserEvent.ctrlKey && ['c', 'x', 'v', 's', 'u', 'a'].includes(key)) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }
+                        });
+                        editor.getDomNode().addEventListener('copy', e => {
+                            e.clipboardData.setData('text/plain', '');
+                            e.preventDefault();
+                        });
+                    });
+            }
+            createEditor('aiogram', 'python-lesson/aiogram.py');
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('keydown', e => {if (e.ctrlKey && ['c', 'x', 'v', 's', 'u', 'a'].includes(e.key.toLowerCase())) {e.preventDefault();}});
+            document.addEventListener('copy', e => {e.clipboardData.setData('text/plain', ''); e.preventDefault();});
+        });
+    </script>
+  </body>
+</html>

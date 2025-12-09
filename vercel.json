@@ -1,0 +1,5 @@
+{
+  "version": 2,
+  "builds": [{ "src": "index.html", "use": "@vercel/static" }, { "src": "python-lesson/**/*", "use": "@vercel/static" }],
+  "routes": [{ "src": "/python-lesson/(.*)", "dest": "/python-lesson/$1" }, { "src": "/(.*)", "dest": "/index.html" }]
+}
